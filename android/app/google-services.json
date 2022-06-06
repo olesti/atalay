@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "847782193141",
+    "firebase_url": "https://earthquake-a2802-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "earthquake-a2802",
+    "storage_bucket": "earthquake-a2802.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:847782193141:android:3b7e6fb77ad24ca32ce2bc",
+        "android_client_info": {
+          "package_name": "com.example.atalay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "847782193141-reli6t2klko3q4u352ndelp0r67gc9k2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7-LTg6s4r7-sfXTQpNzEW5QrdnHU1vGY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "847782193141-reli6t2klko3q4u352ndelp0r67gc9k2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:847782193141:android:2359b3b55797a4592ce2bc",
+        "android_client_info": {
+          "package_name": "com.example.denemegece"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "847782193141-reli6t2klko3q4u352ndelp0r67gc9k2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7-LTg6s4r7-sfXTQpNzEW5QrdnHU1vGY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "847782193141-reli6t2klko3q4u352ndelp0r67gc9k2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:847782193141:android:b8b5bbe1b4a2cd702ce2bc",
+        "android_client_info": {
+          "package_name": "com.example.salideneme01"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "847782193141-reli6t2klko3q4u352ndelp0r67gc9k2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7-LTg6s4r7-sfXTQpNzEW5QrdnHU1vGY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "847782193141-reli6t2klko3q4u352ndelp0r67gc9k2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
