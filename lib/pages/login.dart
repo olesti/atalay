@@ -1,6 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_typing_uninitialized_variables, prefer_const_constructors_in_immutables, import_of_legacy_library_into_null_safe
+import 'package:atalay/model/user_info.dart';
 import 'package:atalay/pages/kayit.dart';
+import 'package:atalay/pages/my_home_page.dart';
+import 'package:atalay/viewmodel/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../app/exceptions.dart';
 
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
@@ -10,8 +16,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  var _username;
-  var _password;
+  String _username = "";
+  String _password = "";
 
   //final _auth = FirebaseAuth.instance;
   final _formkey = GlobalKey<FormState>();
@@ -42,7 +48,7 @@ class _LoginState extends State<Login> {
                   }
                 },
                 onSaved: (value) {
-                  _username = value;
+                  _username = value!;
                 },
               ),
               const SizedBox(height: 10.0),
@@ -62,7 +68,7 @@ class _LoginState extends State<Login> {
                   }
                 },
                 onSaved: (value) {
-                  _password = value;
+                  _password = value!;
                 },
               ),
               Row(
@@ -82,36 +88,42 @@ class _LoginState extends State<Login> {
                       })
                 ],
               ),
-              //_loginbutton()
+              _loginbutton()
             ],
           ),
         ),
       ),
     );
   }
+
   // ignore: deprecated_member_use
-  /*Widget _loginbutton () => RaisedButton(
-    child: const Text("Giriş Yap"), 
-    onPressed: () {signIn(_username, _password);
-      }
-    
-    ); 
-    void signIn(String email, String password) async{
-      if (_formkey.currentState!.validate()){
+  Widget _loginbutton() => RaisedButton(
+      child: const Text("Giriş Yap"),
+      onPressed: () {
+        signIn();
+      });
 
-      
-        await _auth
-        .signInWithEmailAndPassword(email: email, password: password)
-        .then((uid) => {
-          //Fluttertoast.showToast(msg: "giriş başarılı"),
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> Bilgi())),
+  Future signIn() async {
+    if (_formkey.currentState!.validate()) {
+      _formkey.currentState!.save();
 
-        }).catchError((e)
-        {
-         // Fluttertoast.showToast(msg: e!.message);
+      UserModel _userModel = Provider.of<UserModel>(context, listen: false);
+      try {
+        UserInfoC? userInfoC =
+            await _userModel.signInWithEmailandPassword(_username, _password);
+        if (userInfoC != null) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MyHomePage(title: "atalay")));
         }
-        
-        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(Exceptions.goster(e.toString()))));
       }
-    }*/
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Değerleri Doğru Giriniz')));
+    }
+  }
 }

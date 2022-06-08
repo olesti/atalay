@@ -38,8 +38,10 @@ class FirebaseAuthService implements AuthBase {
   }
 
   @override
-  Future<UserInfoC?> signInWithEmailandPassword(String email, String sifre) {
-    // TODO: implement signInWithEmailandPassword
-    throw UnimplementedError();
+  Future<UserInfoC?> signInWithEmailandPassword(
+      String email, String sifre) async {
+    UserCredential sonuc = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email, password: sifre);
+    return _userFromFirebase(sonuc.user);
   }
 }
