@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -20,10 +21,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   final DatabaseReference _testRef = FirebaseDatabase.instance.reference();
   late StreamSubscription _dailySpecialStream;
+  late StreamSubscription<QuerySnapshot<Map<String, dynamic>>>
+      usersCollectionStream;
+
   @override
   void initState() {
     super.initState();
-    _activeListener();
+    //_activeListener();
   }
 
   void _activeListener() {
@@ -33,15 +37,15 @@ class _MyHomePageState extends State<MyHomePage> {
       List<String> sa2 = kullname1.split(" ");
       String varrs2 = sa2[0];
       String varrs3 = sa2[1];
-      String description1 = varrs2+" "+varrs3;  
+      String description1 = varrs2+" "+varrs3;
       String description = kullname1;
      setState(() {
-       
-       
+
+
        displaytext = description;
        displaytext1 ="";
 
-       
+
      });
     });*/
     _dailySpecialStream = _testRef.child("Users/").onValue.listen((event) {
@@ -72,6 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+    getListener();
     return Scaffold(
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
@@ -90,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               ElevatedButton(
                 onPressed: _incrementCounter,
-                child: Text("Write data"),
+                child: const Text("Write data"),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -103,11 +108,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   _testRef.child('Users').push().set(nextOrder);
                   displaytext = '';
                 },
-                child: Text("Create user"),
+                child: const Text("Create user"),
               ),
               ElevatedButton(
                 onPressed: _activeListener,
-                child: Text("Read data"),
+                child: const Text("Read data"),
               ),
 
               Text(displaytext),
@@ -117,6 +122,23 @@ class _MyHomePageState extends State<MyHomePage> {
         )
         // This trailing comma makes auto-formatting nicer for build methods.
         );
+  }
+
+  void getListener() {
+    try {
+      usersCollectionStream = FirebaseFirestore.instance
+          .collection("Users")
+          .snapshots()
+          .listen((event) {
+        for (QueryDocumentSnapshot<Map<String, dynamic>> queryDocumentSnapshot
+            in event.docs) {
+          displaytext += queryDocumentSnapshot.get("name") + ", ";
+          displaytext1 += queryDocumentSnapshot.get("email") + ", ";
+        }
+      });
+    } catch (e) {
+      print("hata: " + e.toString());
+    }
   }
 }
 

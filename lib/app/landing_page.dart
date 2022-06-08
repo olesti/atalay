@@ -1,4 +1,5 @@
 import 'package:atalay/pages/login.dart';
+import 'package:atalay/pages/my_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,15 +15,13 @@ class LandingPage extends StatelessWidget {
       if (_userModel.userC == null) {
         return Login();
       } else {
-        return const Center(
-          child: Text("HomePage"),
-        );
+        return const MyHomePage(title: "atalay");
       }
     } else {
       return const Scaffold(
         backgroundColor: Colors.white,
         body: Center(
-          child: Text("HomePage"),
+          child: CircularProgressIndicator(),
         ),
       );
     }
