@@ -1,22 +1,27 @@
 // @dart=2.9
 
+import 'package:atalay/constants.dart';
 // ignore_for_file: prefer_const_constructors, unused_import
 
 import 'package:atalay/kayitekranlari/profile_screem.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:atalay/constants.dart';
+import 'package:atalay/locator.dart';
 import 'package:atalay/pages/bilgiekrani.dart';
 import 'package:atalay/pages/listeekrani.dart';
+import 'package:atalay/pages/loading.dart';
 import 'package:atalay/pages/login.dart';
 import 'package:atalay/pages/map_yonlendirme.dart';
 import 'package:atalay/pages/maps_seite.dart';
-import 'package:atalay/pages/loading.dart';
 import 'package:atalay/pages/mapsyeni.dart';
 import 'package:atalay/pages/saaa.dart';
+import 'package:atalay/viewmodel/user_model.dart';
 import 'package:atalay/yeni.dart';
-import 'screensto/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'app/landing_page.dart';
+import 'screensto/login_screen.dart';
 
 /*
 
@@ -101,26 +106,37 @@ class _MyHomeState extends State<MyHome> {
 
 //son
 void main() {
+  setupLocator();
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyHome());
 }
 
-class MyHome extends StatelessWidget {
+class MyHome extends StatefulWidget {
   const MyHome({Key key}) : super(key: key);
 
   @override
+  State<MyHome> createState() => _MyHomeState();
+}
+
+class _MyHomeState extends State<MyHome> {
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Auth',
-      theme: ThemeData(
-        primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: Colors.white,
+    return ChangeNotifierProvider(
+      create: (context) => UserModel(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Auth',
+        theme: ThemeData(
+          primaryColor: kPrimaryColor,
+          scaffoldBackgroundColor: Colors.white,
+        ),
+        //home: Kayitekrani(),
+        home: Bilgi(),
       ),
-      //home: Kayitekrani(),
-      home: Asil1(),
     );
   }
 }
+
 /*
 void main() {
   runApp(Myapp());

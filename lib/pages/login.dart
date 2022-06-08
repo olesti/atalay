@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_typing_uninitialized_variables, prefer_const_constructors_in_immutables, import_of_legacy_library_into_null_safe
-import 'package:flutter/material.dart';
-import 'package:atalay/pages/bilgiekrani.dart';
 import 'package:atalay/pages/kayit.dart';
+import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
@@ -69,13 +68,17 @@ class _LoginState extends State<Login> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  MaterialButton(child: const Text("Kayıt"), onPressed: () {}),
+                  MaterialButton(
+                      child: const Text("Kayıt"),
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Kayit()));
+                      }),
                   MaterialButton(
                       child: Text("Şifremi unuttum"),
                       onPressed: () {
-                        setState(() {
-                          Kayit();
-                        });
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Kayit()));
                       })
                 ],
               ),
