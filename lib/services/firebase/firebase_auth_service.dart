@@ -15,7 +15,8 @@ class FirebaseAuthService implements AuthBase {
         id: sonuc.user!.uid,
         name: name,
         password: password,
-        serialNumber: serialNumber);
+        serialNumber: serialNumber,
+        admin: false);
   }
 
   @override
@@ -33,7 +34,11 @@ class FirebaseAuthService implements AuthBase {
     if (user == null) {
       return null;
     } else {
-      return UserInfoC(id: user.uid, email: user.email, name: user.displayName);
+      return UserInfoC(
+          id: user.uid,
+          email: user.email,
+          name: user.displayName,
+          admin: false);
     }
   }
 
