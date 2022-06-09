@@ -21,8 +21,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   final DatabaseReference _testRef = FirebaseDatabase.instance.reference();
   late StreamSubscription _dailySpecialStream;
-  late StreamSubscription<QuerySnapshot<Map<String, dynamic>>>
-      usersCollectionStream;
+  late Stream<QuerySnapshot<Map<String, dynamic>>> usersCollectionStream =
+      FirebaseFirestore.instance.collection("Users").snapshots();
 
   @override
   void initState() {
@@ -76,7 +76,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    getListener();
     return Scaffold(
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
@@ -114,31 +113,37 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: _activeListener,
                 child: const Text("Read data"),
               ),
-
               Text(displaytext),
               Text(displaytext1),
+              StreamBuilder<QuerySnapshot>(
+                  stream: usersCollectionStream,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text("Bir şeyler hatalı");
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Text("Yükleniyor");
+                    }
+
+                    return ListView(
+                      shrinkWrap: true,
+                      children: snapshot.data!.docs.map((DocumentSnapshot doc) {
+                        Map<String, dynamic> data =
+                            doc.data()! as Map<String, dynamic>;
+                        return ListTile(
+                          title: Text(data["name"]),
+                          subtitle: Text(data["email"]),
+                        );
+                      }).toList(),
+                    );
+                  })
             ],
           ),
         )
         // This trailing comma makes auto-formatting nicer for build methods.
         );
-  }
-
-  void getListener() {
-    try {
-      usersCollectionStream = FirebaseFirestore.instance
-          .collection("Users")
-          .snapshots()
-          .listen((event) {
-        for (QueryDocumentSnapshot<Map<String, dynamic>> queryDocumentSnapshot
-            in event.docs) {
-          displaytext += queryDocumentSnapshot.get("name") + ", ";
-          displaytext1 += queryDocumentSnapshot.get("email") + ", ";
-        }
-      });
-    } catch (e) {
-      print("hata: " + e.toString());
-    }
   }
 }
 
