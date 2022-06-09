@@ -1,5 +1,5 @@
 import 'package:atalay/pages/login.dart';
-import 'package:atalay/pages/my_home_page.dart';
+import 'package:atalay/pages/map_yonlendirme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +15,7 @@ class LandingPage extends StatelessWidget {
       if (_userModel.userC == null) {
         return Login();
       } else {
-        return const MyHomePage(title: "atalay");
+        return Asil1();
       }
     } else {
       return const Scaffold(

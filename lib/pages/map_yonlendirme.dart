@@ -1,27 +1,16 @@
 // ignore_for_file: no_logic_in_create_state, unnecessary_this, must_be_immutable
 
-import 'dart:convert';
-
 import 'package:atalay/pages/dat.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:atalay/pages/listeekrani.dart';
+import 'package:atalay/pages/maps_seite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:atalay/pages/bilgiekrani.dart';
-import 'package:atalay/pages/listeekrani.dart';
-import 'package:atalay/pages/maps_seite.dart';
-import 'package:atalay/pages/loading.dart';
-import 'package:atalay/pages/mapsyeni.dart';
-import 'package:atalay/pages/saaa.dart';
-
-import '../liromipos.dart';
-import 'map_onikibes.dart';
 
 class Asil1 extends StatefulWidget {
-  Asil1({Key? key, required this.focus1, required this.currrentIndex})
-      : super(key: key);
-  int currrentIndex;
-  final LatLng focus1;
+  Asil1({Key? key, this.focus1, this.currrentIndex}) : super(key: key);
+  int? currrentIndex;
+  LatLng? focus1;
 
   @override
   _Asil1State createState() =>
@@ -29,9 +18,9 @@ class Asil1 extends StatefulWidget {
 }
 
 class _Asil1State extends State<Asil1> {
-  LatLng focus1;
-  _Asil1State({required this.focus1, required this.currentIndex});
-  int currentIndex = 0;
+  LatLng? focus1;
+  _Asil1State({this.focus1, this.currentIndex});
+  int? currentIndex = 0;
 
   /* void initState() {
     super.initState();

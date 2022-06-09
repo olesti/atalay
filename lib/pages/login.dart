@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_typing_uninitialized_variables, prefer_const_constructors_in_immutables, import_of_legacy_library_into_null_safe
 import 'package:atalay/model/user_info.dart';
 import 'package:atalay/pages/kayit.dart';
-import 'package:atalay/pages/my_home_page.dart';
+import 'package:atalay/pages/map_yonlendirme.dart';
 import 'package:atalay/viewmodel/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -113,9 +113,7 @@ class _LoginState extends State<Login> {
             await _userModel.signInWithEmailandPassword(_username, _password);
         if (userInfoC != null) {
           Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => MyHomePage(title: "atalay")));
+              context, MaterialPageRoute(builder: (context) => Asil1()));
         }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
