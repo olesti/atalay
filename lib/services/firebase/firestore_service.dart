@@ -22,7 +22,7 @@ class FirestoreService {
     try {
       await usersRef.doc(userInfoC.id).set(userInfoC);
     } catch (e) {
-      print("db setData hata: " + e.toString());
+      print("db setUser hata: " + e.toString());
       return false;
     }
     return true;
