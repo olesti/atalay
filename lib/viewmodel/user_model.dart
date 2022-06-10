@@ -77,4 +77,8 @@ class UserModel with ChangeNotifier implements AuthBase {
       throw e;
     }
   }
+
+  Future<bool> addUser(Map<String, dynamic> dataTilesMap) async {
+    return await userRepository.addUser(dataTilesMap);
+  }
 }

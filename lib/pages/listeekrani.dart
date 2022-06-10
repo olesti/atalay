@@ -2,9 +2,11 @@
 
 import 'package:atalay/model/data_tiles.dart';
 import 'package:atalay/pages/map_yonlendirme.dart';
+import 'package:atalay/viewmodel/user_model.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../details.dart';
 
@@ -131,6 +133,15 @@ class _ListeState extends State<Liste> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 40.0),
+        child: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            addUser();
+          },
+        ),
+      ),
       body: ListView.builder(
         physics: ScrollPhysics(parent: null),
         shrinkWrap: true,
@@ -178,6 +189,7 @@ class _ListeState extends State<Liste> {
     Stream<Event> usersRef =
         FirebaseDatabase.instance.reference().child("Users").onValue;
     usersRef.listen((Event event) {
+      dataTilesList.clear();
       Map<String, dynamic> value =
           Map<String, dynamic>.from(event.snapshot.value);
       for (String key in value.keys) {
@@ -187,6 +199,29 @@ class _ListeState extends State<Liste> {
       }
       setState(() {});
     });
+  }
+
+  Future addUser() async {
+    UserModel userModel = Provider.of<UserModel>(context, listen: false);
+    bool sonuc = await userModel.addUser(DataTiles(
+            blood: "B RH-",
+            connection: "B",
+            disease: "No",
+            humidity: "45.0",
+            movement: "false",
+            name: "Demo",
+            position: "45.45, 48.48",
+            temperature: 23.5,
+            userid: "3")
+        .toJson());
+    if (sonuc) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Yeni kullanıcı rtdb e eklendi')));
+      setState(() {});
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Yeni kullanıcı eklenirken bir sorun çıktı')));
+    }
   }
 
   @override

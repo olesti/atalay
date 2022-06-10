@@ -4,12 +4,11 @@ import 'package:atalay/services/firebase/firebase_auth_service.dart';
 import 'package:atalay/services/firebase/rt_db_service.dart';
 
 import '../locator.dart';
-import '../services/firebase/firestore_service.dart';
 
 class UserRepository implements AuthBase {
   final FirebaseAuthService _firebaseAuthService =
       locator<FirebaseAuthService>();
-  final FirestoreService _firestoreService = locator<FirestoreService>();
+  //final FirestoreService _firestoreService = locator<FirestoreService>();
   final FirebaseRTDBService _firebaseRTDBService =
       locator<FirebaseRTDBService>();
 
@@ -48,5 +47,9 @@ class UserRepository implements AuthBase {
       return await _firebaseRTDBService.readUser(userInfoC.id!);
     }
     return null;
+  }
+
+  Future<bool> addUser(Map<String, dynamic> dataTilesMap) async {
+    return await _firebaseRTDBService.addUser(dataTilesMap);
   }
 }
