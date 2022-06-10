@@ -30,8 +30,8 @@ class _Asil1State extends State<Asil1> {
     //OpenContainerTransformDemo(),
     //OpenContainerTransformDemo(),
     //Mapsa1(focus: const LatLng(0, 0),),
-    name(),
-    Mapsa(focus: const LatLng(0, 0)),
+    const name(),
+    Mapsa(),
     Liste(),
   ];
 

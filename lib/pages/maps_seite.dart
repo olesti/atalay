@@ -2,15 +2,17 @@
 
 import 'dart:async';
 import 'dart:collection';
+
+import 'package:atalay/model/data_tiles.dart';
+import 'package:atalay/model/pin.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:atalay/model/pin.dart';
 
 class Mapsa extends StatefulWidget {
-  Mapsa({Key? key, required this.focus}) : super(key: key);
-  LatLng focus;
+  Mapsa({Key? key, this.focus}) : super(key: key);
+  LatLng? focus;
   @override
   _MapsaState createState() => _MapsaState();
   final formKey = new GlobalKey<FormState>();
@@ -18,6 +20,7 @@ class Mapsa extends StatefulWidget {
 
 class _MapsaState extends State<Mapsa> {
   late BitmapDescriptor sourceIcon;
+
   void setPin() async {
     sourceIcon = await BitmapDescriptor.fromAssetImage(
         const ImageConfiguration(devicePixelRatio: 2.0),
@@ -43,6 +46,10 @@ class _MapsaState extends State<Mapsa> {
   }*/
 
   late PinData _sourcePinInfo;
+
+  LatLng focus = const LatLng(41.003710, 29.032128);
+
+  /*
   void _onMap(GoogleMapController mycontroller) {
     final DatabaseReference _testRef = FirebaseDatabase.instance.reference();
     late StreamSubscription _dailySpecialStream;
@@ -83,8 +90,8 @@ class _MapsaState extends State<Mapsa> {
         setState(() {
           _markers.add(
             Marker(
-                markerId: MarkerId('id-1'),
-                position: LatLng(41.003710, 29.032128),
+                markerId: const MarkerId('id-1'),
+                position: const LatLng(41.003710, 29.032128),
                 onTap: () {
                   var bottomSheetController1 = scaffoldKey.currentState!
                       .showBottomSheet((context) => Container(
@@ -105,7 +112,7 @@ class _MapsaState extends State<Mapsa> {
           _markers.add(
             Marker(
                 markerId: const MarkerId('id-2'),
-                position: LatLng(41.007710, 29.06528),
+                position: const LatLng(41.007710, 29.06528),
                 onTap: () {
                   var bottomSheetController1 = scaffoldKey.currentState!
                       .showBottomSheet((context) => Container(
@@ -149,13 +156,60 @@ class _MapsaState extends State<Mapsa> {
         });
       });
     });
+  }*/
+
+  void _onMap1(GoogleMapController mycontroller) {
+    List<DataTiles> dataTilesList = [];
+    Stream<Event> usersRef =
+        FirebaseDatabase.instance.reference().child("Users").onValue;
+    usersRef.listen((Event event) {
+      dataTilesList.clear();
+      _markers.clear();
+      Map<String, dynamic> value =
+          Map<String, dynamic>.from(event.snapshot.value);
+      for (String key in value.keys) {
+        DataTiles dataTiles =
+            DataTiles.fromJson(Map<String, dynamic>.from(value[key]));
+        dataTilesList.add(dataTiles);
+      }
+
+      for (DataTiles dataTiles in dataTilesList) {
+        List<String> positions = dataTiles.position!.split(",");
+
+        _markers.add(Marker(
+            markerId: MarkerId(dataTiles.userid!),
+            position:
+                LatLng(double.parse(positions[0]), double.parse(positions[1])),
+            onTap: () {
+              scaffoldKey.currentState!.showBottomSheet((context) => Container(
+                    child: getBottomSheet(
+                        dataTiles.name!,
+                        dataTiles.blood!,
+                        dataTiles.disease!,
+                        Colors.green,
+                        dataTiles.movement!,
+                        "Ortam Koşulları İyi",
+                        adresse3,
+                        "05387423541"),
+                    height: 250,
+                    color: Colors.transparent,
+                  ));
+            }));
+      }
+      setState(() {});
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.focus != null) {
+      focus = widget.focus!;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.focus == const LatLng(0, 0)) {
-      widget.focus = const LatLng(41.003710, 29.032128);
-    }
     //final dailySpecialRef = database.child('/earthquake-a2802-default-rtdbHumidity');
     /*CollectionReference kullaniciref = _firestore.collection('kullanicilar');
     var kullaniciRef = _firestore.collection('kullanicilar').doc('00001');*/
@@ -163,9 +217,9 @@ class _MapsaState extends State<Mapsa> {
       key: scaffoldKey,
       body: Stack(alignment: Alignment.center, children: [
         GoogleMap(
-          onMapCreated: _onMap,
+          onMapCreated: _onMap1,
           markers: _markers,
-          initialCameraPosition: CameraPosition(target: widget.focus, zoom: 11),
+          initialCameraPosition: CameraPosition(target: focus, zoom: 11),
         ),
       ]),
     );
@@ -193,10 +247,9 @@ class _MapsaState extends State<Mapsa> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
+                      const Text(
                         "zz",
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 15),
+                        style: TextStyle(color: Colors.white, fontSize: 15),
                       ),
                       const SizedBox(
                         height: 5,
@@ -204,18 +257,18 @@ class _MapsaState extends State<Mapsa> {
                       Row(
                         children: <Widget>[
                           Text(s1,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 14)),
-                          Icon(
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 14)),
+                          const Icon(
                             Icons.bloodtype,
                             color: Colors.yellow,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
                           Text(s2,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 14)),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 14)),
                           Icon(
                             vss,
                             color: Colors.purple,
@@ -226,7 +279,8 @@ class _MapsaState extends State<Mapsa> {
                         height: 5,
                       ),
                       Text(s3,
-                          style: TextStyle(color: Colors.white, fontSize: 14)),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 14)),
                     ],
                   ),
                 ),
@@ -278,7 +332,7 @@ class _MapsaState extends State<Mapsa> {
                         width: 10,
                       ),
                       IconButton(
-                        icon: Icon(Icons.call),
+                        icon: const Icon(Icons.call),
                         color: Colors.blue,
                         onPressed: () async {
                           await FlutterPhoneDirectCaller.callNumber(num);
@@ -298,7 +352,7 @@ class _MapsaState extends State<Mapsa> {
           child: Align(
             alignment: Alignment.topRight,
             child: FloatingActionButton(
-                child: Icon(
+                child: const Icon(
                   Icons.navigation,
                 ),
                 onPressed: () {}),
@@ -324,5 +378,5 @@ void hesaplama(int a, String b, bool c) {
   } else if (50 > a || a >= 35) {
     point += 5;
   }
-  print(point);
+  print("point: " + point.toString());
 }
