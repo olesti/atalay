@@ -33,7 +33,7 @@ class UserRepository implements AuthBase {
   Future<UserInfoC?> currentUser() async {
     UserInfoC? _userInfoC = await _firebaseAuthService.currentUser();
     if (_userInfoC != null) {
-      return await _firestoreService.readUser(_userInfoC.id!);
+      return await _firebaseRTDBService.readUser(_userInfoC.id!);
     } else {
       return null;
     }

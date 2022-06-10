@@ -1,17 +1,22 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 
+import 'package:atalay/model/data_tiles.dart';
+import 'package:atalay/pages/map_yonlendirme.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:atalay/pages/map_yonlendirme.dart';
-import 'package:atalay/yeni.dart';
 
 import '../details.dart';
-import '../liromipos.dart';
-import 'maps_seite.dart';
 
-class Liste extends StatelessWidget {
+class Liste extends StatefulWidget {
   Liste({Key? key}) : super(key: key);
 
+  @override
+  State<Liste> createState() => _ListeState();
+}
+
+class _ListeState extends State<Liste> {
+  /*
   final List<DataTiles> dataTilesList = [
     DataTiles(
         name: 'Yiğit Atalay',
@@ -111,9 +116,18 @@ class Liste extends StatelessWidget {
         hareket: false,
         gaz: false,
         konum: LatLng(41.007710, 29.06528)),
-  ];
+  ];*/
+
+  List<DataTiles> dataTilesList = [];
 
   skor2(gaz, hareket);
+
+  @override
+  void initState() {
+    super.initState();
+    getListener();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,9 +136,9 @@ class Liste extends StatelessWidget {
         shrinkWrap: true,
         itemBuilder: (listViewContext, int index) {
           return Card(
-            color: dataTilesList[index].color,
+            //color: dataTilesList[index].color,
             child: ListTile(
-              title: Text(dataTilesList[index].name),
+              title: Text(dataTilesList[index].name!),
               trailing: IconButton(
                   icon: Icon(Icons.arrow_forward),
                   onPressed: () {
@@ -136,14 +150,17 @@ class Liste extends StatelessWidget {
                     );
                   }),
               leading: Icon(Icons.supervised_user_circle),
-              subtitle: Text(dataTilesList[index].subtitle),
+              subtitle: Text(dataTilesList[index].userid!),
               //selected: index = dataTilesList[index].,
               onTap: () {
+                List<String> positions =
+                    dataTilesList[index].position!.split(",");
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => Asil1(
-                      focus1: dataTilesList[index].konum,
+                      focus1: LatLng(double.parse(positions[0]),
+                          double.parse(positions[1])),
                       currrentIndex: 1,
                     ),
                   ),
@@ -157,10 +174,26 @@ class Liste extends StatelessWidget {
     );
   }
 
+  void getListener() {
+    Stream<Event> usersRef =
+        FirebaseDatabase.instance.reference().child("Users").onValue;
+    usersRef.listen((Event event) {
+      Map<String, dynamic> value =
+          Map<String, dynamic>.from(event.snapshot.value);
+      for (String key in value.keys) {
+        DataTiles dataTiles =
+            DataTiles.fromJson(Map<String, dynamic>.from(value[key]));
+        dataTilesList.add(dataTiles);
+      }
+      setState(() {});
+    });
+  }
+
   @override
   noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
+/*
 class DataTiles {
   DataTiles(
       {required this.color,
@@ -184,7 +217,7 @@ class DataTiles {
   }
   }*/
 
-}
+}*/
 /*
 ListView(
           children: [
@@ -202,5 +235,3 @@ ListView(
 
         )
         */
-
-      
