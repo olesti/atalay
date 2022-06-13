@@ -158,53 +158,14 @@ class _MapsaState extends State<Mapsa> {
     });
   }*/
 
-  void _onMap1(GoogleMapController mycontroller) {
-    List<DataTiles> dataTilesList = [];
-    Stream<Event> usersRef =
-        FirebaseDatabase.instance.reference().child("Users").onValue;
-    usersRef.listen((Event event) {
-      dataTilesList.clear();
-      _markers.clear();
-      Map<String, dynamic> value =
-          Map<String, dynamic>.from(event.snapshot.value);
-      for (String key in value.keys) {
-        DataTiles dataTiles =
-            DataTiles.fromJson(Map<String, dynamic>.from(value[key]));
-        dataTilesList.add(dataTiles);
-      }
-
-      for (DataTiles dataTiles in dataTilesList) {
-        List<String> positions = dataTiles.position!.split(",");
-
-        _markers.add(Marker(
-            markerId: MarkerId(dataTiles.userid!),
-            position:
-                LatLng(double.parse(positions[0]), double.parse(positions[1])),
-            onTap: () {
-              scaffoldKey.currentState!.showBottomSheet((context) => Container(
-                    child: getBottomSheet(
-                        dataTiles.name!,
-                        dataTiles.blood!,
-                        dataTiles.disease!,
-                        Colors.green,
-                        dataTiles.movement!,
-                        "Ortam Koşulları İyi",
-                        adresse3,
-                        "05387423541"),
-                    height: 250,
-                    color: Colors.transparent,
-                  ));
-            }));
-      }
-      setState(() {});
-    });
-  }
+  List<DataTiles> dataTilesList = [];
 
   @override
   void initState() {
     super.initState();
+    getListener();
     if (widget.focus != null) {
-      focus = widget.focus!;
+      getFocus();
     }
   }
 
@@ -217,7 +178,7 @@ class _MapsaState extends State<Mapsa> {
       key: scaffoldKey,
       body: Stack(alignment: Alignment.center, children: [
         GoogleMap(
-          onMapCreated: _onMap1,
+          //onMapCreated: _onMap1,
           markers: _markers,
           initialCameraPosition: CameraPosition(target: focus, zoom: 11),
         ),
@@ -360,6 +321,55 @@ class _MapsaState extends State<Mapsa> {
         )
       ],
     );
+  }
+
+  void getListener() {
+    Stream<Event> usersRef =
+        FirebaseDatabase.instance.reference().child("Users").onValue;
+    usersRef.listen((Event event) {
+      dataTilesList.clear();
+      Map<String, dynamic> value =
+          Map<String, dynamic>.from(event.snapshot.value);
+      for (String key in value.keys) {
+        DataTiles dataTiles =
+            DataTiles.fromJson(Map<String, dynamic>.from(value[key]));
+        dataTilesList.add(dataTiles);
+      }
+
+      fillMarkers();
+    });
+  }
+
+  void fillMarkers() {
+    _markers.clear();
+    for (DataTiles dataTiles in dataTilesList) {
+      List<String> positions = dataTiles.position!.split(",");
+
+      _markers.add(Marker(
+          markerId: MarkerId(dataTiles.userid!),
+          position:
+              LatLng(double.parse(positions[0]), double.parse(positions[1])),
+          onTap: () {
+            scaffoldKey.currentState!.showBottomSheet((context) => Container(
+                  child: getBottomSheet(
+                      dataTiles.name!,
+                      dataTiles.blood!,
+                      dataTiles.disease!,
+                      Colors.green,
+                      dataTiles.movement!,
+                      "Ortam Koşulları İyi",
+                      adresse3,
+                      "05387423541"),
+                  height: 250,
+                  color: Colors.transparent,
+                ));
+          }));
+    }
+    setState(() {});
+  }
+
+  void getFocus() {
+    focus = widget.focus!;
   }
 }
 
