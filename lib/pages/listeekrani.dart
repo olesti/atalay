@@ -177,7 +177,7 @@ class _ListeState extends State<Liste> {
                     );
                   }),
               leading: Icon(Icons.supervised_user_circle),
-              subtitle: Text(dataTilesList[index].userid!),
+              subtitle: Text(dataTilesList[index].blood!),
               //selected: index = dataTilesList[index].,
               onTap: () {
                 UserModel userModel =
