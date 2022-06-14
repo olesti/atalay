@@ -49,9 +49,6 @@ class _MapsaState extends State<Mapsa> {
 
   late PinData _sourcePinInfo;
 
-  //Ülker Fenerbahçe Şükrü Saracoğlu Stadyumu
-  LatLng focus = const LatLng(40.98820621252252, 29.036891723214072);
-
   late CameraPosition focusCameraPosition;
 
   /*
@@ -175,6 +172,7 @@ class _MapsaState extends State<Mapsa> {
   void initState() {
     super.initState();
     getListener();
+    //Ülker Fenerbahçe Şükrü Saracoğlu Stadyumu
     focusCameraPosition = CameraPosition(
         target: const LatLng(40.98820621252252, 29.036891723214072),
         zoom: zoom);
@@ -393,10 +391,6 @@ class _MapsaState extends State<Mapsa> {
         LatLng(double.parse(positions[0]), double.parse(positions[1])), 16));
     markerTap(focusDataTiles!.name!, focusDataTiles!.blood!,
         focusDataTiles!.disease!, focusDataTiles!.movement!);
-  }
-
-  int searchDataTile(String key) {
-    return -1;
   }
 
   Future markerTap(
