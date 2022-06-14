@@ -43,4 +43,9 @@ class DataTiles {
         "Temperature": temperature,
         "userid": userid
       };
+
+  @override
+  String toString() {
+    return 'DataTiles{blood: $blood, connection: $connection, disease: $disease, humidity: $humidity, movement: $movement, name: $name, position: $position, temperature: $temperature, userid: $userid}';
+  }
 }

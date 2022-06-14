@@ -1,3 +1,4 @@
+import 'package:atalay/model/data_tiles.dart';
 import 'package:atalay/model/user_info.dart';
 import 'package:atalay/repository/user_repository.dart';
 import 'package:atalay/services/auth_base.dart';
@@ -11,6 +12,7 @@ class UserModel with ChangeNotifier implements AuthBase {
   ViewState _state = ViewState.idle;
   UserRepository userRepository = locator<UserRepository>();
   UserInfoC? _userC;
+  DataTiles? focusDataTiles;
 
   UserModel() {
     state = ViewState.busy;

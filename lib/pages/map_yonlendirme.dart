@@ -13,27 +13,32 @@ class Asil1 extends StatefulWidget {
   LatLng? focus1;
 
   @override
-  _Asil1State createState() =>
-      _Asil1State(focus1: this.focus1, currentIndex: this.currrentIndex);
+  _Asil1State createState() => _Asil1State();
 }
 
 class _Asil1State extends State<Asil1> {
   LatLng? focus1;
-  _Asil1State({this.focus1, this.currentIndex});
-  int? currentIndex = 0;
+  int currentIndex = 0;
 
   /* void initState() {
     super.initState();
     focus2 = widget.focus1;
   }*/
-  final screen = [
+  List<Widget> screen = [
     //OpenContainerTransformDemo(),
     //OpenContainerTransformDemo(),
     //Mapsa1(focus: const LatLng(0, 0),),
     const name(),
     Mapsa(),
-    Liste(),
   ];
+
+  GlobalKey globalKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    screen.add(Liste(globalKey: globalKey));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +46,7 @@ class _Asil1State extends State<Asil1> {
         //body: screen[currentIndex],
         child: CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
+        key: globalKey,
         items: const <BottomNavigationBarItem>[
           //type: BottomNavigationBarType.shifting,
           //currentIndex: currentIndex,
@@ -65,6 +71,8 @@ class _Asil1State extends State<Asil1> {
             backgroundColor: Colors.blueGrey,
           ),
         ],
+        currentIndex: currentIndex,
+        onTap: (index) => setState(() => currentIndex = index),
       ),
       tabBuilder: (BuildContext context, int index) {
         return CupertinoTabView(

@@ -1,14 +1,7 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:atalay/pages/bilgiekrani.dart';
 import 'package:atalay/pages/listeekrani.dart';
 import 'package:atalay/pages/maps_seite.dart';
-import 'package:atalay/pages/loading.dart';
-import 'package:atalay/pages/mapsyeni.dart';
-import 'package:atalay/pages/saaa.dart';
+import 'package:flutter/material.dart';
 
-import 'info.dart';
 import 'liromipos.dart';
 
 class Asil extends StatefulWidget {
@@ -24,7 +17,8 @@ class _AsilState extends State<Asil> {
   final screen = [
     OpenContainerTransformDemo(),
     //OpenContainerTransformDemo(),
-    Mapsa(focus: LatLng(41.007710, 29.06528)),
+    Mapsa(//focus: LatLng(41.007710, 29.06528)
+        ),
     Liste(),
   ];
 

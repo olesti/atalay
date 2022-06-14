@@ -5,14 +5,16 @@ import 'dart:collection';
 
 import 'package:atalay/model/data_tiles.dart';
 import 'package:atalay/model/pin.dart';
+import 'package:atalay/viewmodel/user_model.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 class Mapsa extends StatefulWidget {
-  Mapsa({Key? key, this.focus}) : super(key: key);
-  LatLng? focus;
+  String? userKey;
+  Mapsa({Key? key, this.userKey}) : super(key: key);
   @override
   _MapsaState createState() => _MapsaState();
   final formKey = new GlobalKey<FormState>();
@@ -47,7 +49,10 @@ class _MapsaState extends State<Mapsa> {
 
   late PinData _sourcePinInfo;
 
-  LatLng focus = const LatLng(41.003710, 29.032128);
+  //Ülker Fenerbahçe Şükrü Saracoğlu Stadyumu
+  LatLng focus = const LatLng(40.98820621252252, 29.036891723214072);
+
+  late CameraPosition focusCameraPosition;
 
   /*
   void _onMap(GoogleMapController mycontroller) {
@@ -160,13 +165,25 @@ class _MapsaState extends State<Mapsa> {
 
   List<DataTiles> dataTilesList = [];
 
+  double zoom = 14;
+
+  DataTiles? focusDataTiles;
+
+  GoogleMapController? controller;
+
   @override
   void initState() {
     super.initState();
     getListener();
-    if (widget.focus != null) {
-      getFocus();
-    }
+    focusCameraPosition = CameraPosition(
+        target: const LatLng(40.98820621252252, 29.036891723214072),
+        zoom: zoom);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller!.dispose();
   }
 
   @override
@@ -174,13 +191,15 @@ class _MapsaState extends State<Mapsa> {
     //final dailySpecialRef = database.child('/earthquake-a2802-default-rtdbHumidity');
     /*CollectionReference kullaniciref = _firestore.collection('kullanicilar');
     var kullaniciRef = _firestore.collection('kullanicilar').doc('00001');*/
+    checkUserKey().then((value) => setState(() {}));
     return Scaffold(
       key: scaffoldKey,
       body: Stack(alignment: Alignment.center, children: [
         GoogleMap(
           //onMapCreated: _onMap1,
           markers: _markers,
-          initialCameraPosition: CameraPosition(target: focus, zoom: 11),
+          initialCameraPosition: focusCameraPosition,
+          onMapCreated: updateCameraPosition,
         ),
       ]),
     );
@@ -350,26 +369,49 @@ class _MapsaState extends State<Mapsa> {
           position:
               LatLng(double.parse(positions[0]), double.parse(positions[1])),
           onTap: () {
-            scaffoldKey.currentState!.showBottomSheet((context) => Container(
-                  child: getBottomSheet(
-                      dataTiles.name!,
-                      dataTiles.blood!,
-                      dataTiles.disease!,
-                      Colors.green,
-                      dataTiles.movement!,
-                      "Ortam Koşulları İyi",
-                      adresse3,
-                      "05387423541"),
-                  height: 250,
-                  color: Colors.transparent,
-                ));
+            markerTap(dataTiles.name!, dataTiles.blood!, dataTiles.disease!,
+                dataTiles.movement!);
           }));
     }
     setState(() {});
   }
 
-  void getFocus() {
-    focus = widget.focus!;
+  Future checkUserKey() async {
+    UserModel userModel = Provider.of<UserModel>(context, listen: false);
+    if (userModel.focusDataTiles != null) {
+      focusDataTiles = userModel.focusDataTiles;
+      userModel.focusDataTiles = null;
+      print("name: " + focusDataTiles!.name!);
+      getFocus();
+    }
+  }
+
+  Future getFocus() async {
+    List<String> positions = focusDataTiles!.position!.split(",");
+    await Future.delayed(const Duration(milliseconds: 400));
+    controller!.moveCamera(CameraUpdate.newLatLngZoom(
+        LatLng(double.parse(positions[0]), double.parse(positions[1])), 16));
+    markerTap(focusDataTiles!.name!, focusDataTiles!.blood!,
+        focusDataTiles!.disease!, focusDataTiles!.movement!);
+  }
+
+  int searchDataTile(String key) {
+    return -1;
+  }
+
+  Future markerTap(
+      String name, String blood, String disease, String movement) async {
+    await Future.delayed(const Duration(milliseconds: 400));
+    scaffoldKey.currentState!.showBottomSheet((context) => Container(
+          child: getBottomSheet(name, blood, disease, Colors.green, movement,
+              "Ortam Koşulları İyi", adresse3, "05387423541"),
+          height: 250,
+          color: Colors.transparent,
+        ));
+  }
+
+  void updateCameraPosition(GoogleMapController googleMapController) {
+    controller = googleMapController;
   }
 }
 

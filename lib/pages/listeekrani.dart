@@ -1,17 +1,17 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 
 import 'package:atalay/model/data_tiles.dart';
-import 'package:atalay/pages/map_yonlendirme.dart';
 import 'package:atalay/viewmodel/user_model.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../details.dart';
 
 class Liste extends StatefulWidget {
-  Liste({Key? key}) : super(key: key);
+  final GlobalKey? globalKey;
+  const Liste({Key? key, this.globalKey}) : super(key: key);
 
   @override
   State<Liste> createState() => _ListeState();
@@ -130,6 +130,22 @@ class _ListeState extends State<Liste> {
     getListener();
   }
 
+  void getListener() {
+    Stream<Event> usersRef =
+        FirebaseDatabase.instance.reference().child("Users").onValue;
+    usersRef.listen((Event event) {
+      dataTilesList.clear();
+      Map<String, dynamic> value =
+          Map<String, dynamic>.from(event.snapshot.value);
+      for (String key in value.keys) {
+        DataTiles dataTiles =
+            DataTiles.fromJson(Map<String, dynamic>.from(value[key]));
+        dataTilesList.add(dataTiles);
+      }
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -164,18 +180,21 @@ class _ListeState extends State<Liste> {
               subtitle: Text(dataTilesList[index].userid!),
               //selected: index = dataTilesList[index].,
               onTap: () {
-                List<String> positions =
-                    dataTilesList[index].position!.split(",");
-                Navigator.push(
+                UserModel userModel =
+                    Provider.of<UserModel>(context, listen: false);
+                userModel.focusDataTiles = dataTilesList[index];
+
+                final CupertinoTabBar cupertinoTabBar =
+                    widget.globalKey!.currentWidget as CupertinoTabBar;
+                cupertinoTabBar.onTap!(1);
+                /*Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Asil1(
-                      focus1: LatLng(double.parse(positions[0]),
-                          double.parse(positions[1])),
-                      currrentIndex: 1,
+                    builder: (context) => Mapsa(
+                      userKey: dataTilesList[index].key,
                     ),
                   ),
-                );
+                );*/
               },
             ),
           );
@@ -183,22 +202,6 @@ class _ListeState extends State<Liste> {
         itemCount: dataTilesList.length,
       ),
     );
-  }
-
-  void getListener() {
-    Stream<Event> usersRef =
-        FirebaseDatabase.instance.reference().child("Users").onValue;
-    usersRef.listen((Event event) {
-      dataTilesList.clear();
-      Map<String, dynamic> value =
-          Map<String, dynamic>.from(event.snapshot.value);
-      for (String key in value.keys) {
-        DataTiles dataTiles =
-            DataTiles.fromJson(Map<String, dynamic>.from(value[key]));
-        dataTilesList.add(dataTiles);
-      }
-      setState(() {});
-    });
   }
 
   Future addUser() async {
