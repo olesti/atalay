@@ -36,9 +36,6 @@ class _MapsaState extends State<Mapsa> {
   var kullname2;
   var kullname3;
   var yigo;
-  late String adresse1 = "Yeni mah. 3130.sokak göktürk apartmanı no.7 ";
-  late String adresse2 = "İçerenköy mah. Erdem sokak no.6 ";
-  late String adresse3 = "Kavacık mah. Ezine sokak no.22  ";
   /*void kullname() {
     final DatabaseReference _testRef = FirebaseDatabase.instance.reference();
     late StreamSubscription _dailySpecialStream;
@@ -367,8 +364,8 @@ class _MapsaState extends State<Mapsa> {
           position:
               LatLng(double.parse(positions[0]), double.parse(positions[1])),
           onTap: () {
-            markerTap(dataTiles.name!, dataTiles.blood!, dataTiles.disease!,
-                dataTiles.movement!);
+            markerTap(dataTiles.address!, dataTiles.name!, dataTiles.blood!,
+                dataTiles.disease!, dataTiles.movement!);
           }));
     }
     setState(() {});
@@ -389,16 +386,20 @@ class _MapsaState extends State<Mapsa> {
     await Future.delayed(const Duration(milliseconds: 400));
     controller!.moveCamera(CameraUpdate.newLatLngZoom(
         LatLng(double.parse(positions[0]), double.parse(positions[1])), 16));
-    markerTap(focusDataTiles!.name!, focusDataTiles!.blood!,
-        focusDataTiles!.disease!, focusDataTiles!.movement!);
+    markerTap(
+        focusDataTiles!.address!,
+        focusDataTiles!.name!,
+        focusDataTiles!.blood!,
+        focusDataTiles!.disease!,
+        focusDataTiles!.movement!);
   }
 
-  Future markerTap(
-      String name, String blood, String disease, String movement) async {
+  Future markerTap(String address, String name, String blood, String disease,
+      String movement) async {
     await Future.delayed(const Duration(milliseconds: 400));
     scaffoldKey.currentState!.showBottomSheet((context) => Container(
           child: getBottomSheet(name, blood, disease, Colors.green, movement,
-              "Ortam Koşulları İyi", adresse3, "05387423541"),
+              "Ortam Koşulları İyi", address, "05387423541"),
           height: 250,
           color: Colors.transparent,
         ));

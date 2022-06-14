@@ -1,4 +1,5 @@
 class DataTiles {
+  String? address;
   String? blood;
   String? connection;
   String? disease;
@@ -10,7 +11,8 @@ class DataTiles {
   String? userid;
 
   DataTiles(
-      {this.blood,
+      {this.address,
+      this.blood,
       this.connection,
       this.disease,
       this.humidity,
@@ -22,6 +24,7 @@ class DataTiles {
 
   DataTiles.fromJson(Map<String, Object?> json)
       : this(
+            address: json["Address"] as String,
             blood: json["Blood"] as String,
             connection: json["Connection"] as String,
             disease: json["Disease"] as String,
@@ -33,6 +36,7 @@ class DataTiles {
             userid: json["userid"] as String);
 
   Map<String, Object?> toJson() => {
+        "Address": address,
         "Blood": blood,
         "Connection": connection,
         "Disease": disease,
