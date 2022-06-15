@@ -20,83 +20,7 @@ class Liste extends StatefulWidget {
 class _ListeState extends State<Liste> {
   /*
   final List<DataTiles> dataTilesList = [
-    DataTiles(
-        name: 'Yiğit Atalay',
-        color: Colors.red.shade400,
-        subtitle: "Kronik Hasta, 24y, A+",
-        hareket: false,
-        gaz: true,
-        konum: LatLng(41.007710, 29.06528)),
-    DataTiles(
-        name: 'Çağatay Parlar',
-        color: Colors.green,
-        subtitle: "Sağlıklı, 17y, 0+",
-        hareket: true,
-        gaz: true,
-        konum: LatLng(41.119775, 028.768304)),
-    DataTiles(
-        name: 'Özge Şentürk',
-        color: Colors.red.shade300,
-        subtitle: "Sağlıklı, 35y, A+",
-        hareket: true,
-        gaz: false,
-        konum: LatLng(41.007710, 29.06528)),
-    DataTiles(
-        name: 'Bahri Gündoğdu ',
-        color: Colors.red.shade700,
-        subtitle: "Hasta, 48y, 0+",
-        hareket: false,
-        gaz: false,
-        konum: LatLng(41.007710, 29.06528)),
-    DataTiles(
-        name: 'Hüseyin Özgün',
-        color: Colors.red.shade500,
-        subtitle: "Kronik Hasta, 63y, B+",
-        hareket: false,
-        gaz: true,
-        konum: LatLng(41.007710, 29.06528)),
-    DataTiles(
-        name: 'Selin Demir',
-        color: Colors.red.shade300,
-        subtitle: "Kronik Hasta, 71y, AB-",
-        hareket: true,
-        gaz: false,
-        konum: LatLng(41.007710, 29.06528)),
-    DataTiles(
-        name: 'Sezer Çelenk',
-        color: Colors.red.shade400,
-        subtitle: "Sağlıklı, 50y, 0-",
-        hareket: false,
-        gaz: true,
-        konum: LatLng(41.007710, 29.06528)),
-    DataTiles(
-        name: 'Emin Dege',
-        color: Colors.red.shade700,
-        subtitle: "Hasta, 41, A-",
-        hareket: false,
-        gaz: false,
-        konum: LatLng(41.007710, 29.06528)),
-    DataTiles(
-        name: 'Kaan Sümer',
-        color: Colors.red.shade300,
-        subtitle: "Sağlıklı, 35y, A+",
-        hareket: true,
-        gaz: false,
-        konum: LatLng(41.003710, 29.032128)),
-    DataTiles(
-        name: 'Zeynep Şerabatır ',
-        color: Colors.red.shade700,
-        subtitle: "Hasta, 48y, 0+",
-        hareket: false,
-        gaz: false,
-        konum: LatLng(41.007710, 29.06528)),
-    DataTiles(
-        name: 'Selin Yatkaya',
-        color: Colors.red.shade500,
-        subtitle: "Kronik Hasta, 63y, B+",
-        hareket: false,
-        gaz: true,
-        konum: LatLng(41.007710, 29.06528)),
+   
     DataTiles(
         name: 'Bekir Karagöz',
         color: Colors.red.shade300,
@@ -122,14 +46,13 @@ class _ListeState extends State<Liste> {
 
   List<DataTiles> dataTilesList = [];
 
-  skor2(gaz, hareket);
-
   @override
   void initState() {
     super.initState();
     getListener();
   }
 
+  var colorss;
   void getListener() {
     Stream<Event> usersRef =
         FirebaseDatabase.instance.reference().child("Users").onValue;
@@ -162,8 +85,13 @@ class _ListeState extends State<Liste> {
         physics: ScrollPhysics(parent: null),
         shrinkWrap: true,
         itemBuilder: (listViewContext, int index) {
+          if (dataTilesList[index].movement! == "true") {
+            colorss = Colors.amber;
+          } else {
+            colorss = Colors.red;
+          }
           return Card(
-            //color: dataTilesList[index].color,
+            color: colorss,
             child: ListTile(
               title: Text(dataTilesList[index].name!),
               trailing: IconButton(
@@ -187,6 +115,11 @@ class _ListeState extends State<Liste> {
                 final CupertinoTabBar cupertinoTabBar =
                     widget.globalKey!.currentWidget as CupertinoTabBar;
                 cupertinoTabBar.onTap!(1);
+
+                /*//eğer sayfa Asil navbar ile ise aşağısı
+                final BottomNavigationBar cupertinoTabBar =
+                    widget.globalKey!.currentWidget as BottomNavigationBar;
+                cupertinoTabBar.onTap!(1);*/
                 /*Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -230,46 +163,3 @@ class _ListeState extends State<Liste> {
   @override
   noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
-
-/*
-class DataTiles {
-  DataTiles(
-      {required this.color,
-      required this.hareket,
-      required this.gaz,
-      required this.subtitle,
-      required this.name,
-      required this.konum});
-  final String name;
-  final Color color;
-  final String subtitle;
-  final bool gaz;
-  final bool hareket;
-  final LatLng konum;
-  /*void skor2(gaz,hareket){
-  int i=0;
-  if(gaz){
-  color2 = Colors.red.shade400;
-  }else if(hareket){
-  color = Colors.red.shade600;
-  }
-  }*/
-
-}*/
-/*
-ListView(
-          children: [
-            Container(
-              color: Colors.greenAccent,
-              child: ListTile(
-                leading: Icon(Icons.verified_user),
-                title: Text('Yiğit Atalay'),
-                subtitle: Text('20C, 0+, Kronik Hasta, 24 Yas'),
-                trailing: Icon(Icons.phone),
-              ),
-            )
-          ],
-
-
-        )
-        */

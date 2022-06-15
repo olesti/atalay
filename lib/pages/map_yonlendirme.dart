@@ -1,5 +1,7 @@
 // ignore_for_file: no_logic_in_create_state, unnecessary_this, must_be_immutable
 
+//import 'dart:html';
+
 import 'package:atalay/pages/dat.dart';
 import 'package:atalay/pages/listeekrani.dart';
 import 'package:atalay/pages/maps_seite.dart';
@@ -42,10 +44,12 @@ class _Asil1State extends State<Asil1> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
+    return Scaffold(
+
         //body: screen[currentIndex],
-        child: CupertinoTabScaffold(
+        body: CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
+        activeColor: Colors.amberAccent,
         key: globalKey,
         items: const <BottomNavigationBarItem>[
           //type: BottomNavigationBarType.shifting,
@@ -65,10 +69,9 @@ class _Asil1State extends State<Asil1> {
           BottomNavigationBarItem(
             icon: Icon(
               CupertinoIcons.list_dash,
-              color: Colors.red,
             ),
             label: 'List',
-            backgroundColor: Colors.blueGrey,
+            backgroundColor: Colors.yellow,
           ),
         ],
         currentIndex: currentIndex,

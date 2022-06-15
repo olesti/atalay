@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:collection';
+import 'dart:ffi';
 
 import 'package:atalay/model/data_tiles.dart';
 import 'package:atalay/model/pin.dart';
@@ -31,11 +32,11 @@ class _MapsaState extends State<Mapsa> {
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final _markers = HashSet<Marker>();
-  var cagatayLoc;
-  var username1;
-  var kullname2;
-  var kullname3;
-  var yigo;
+  // var cagatayLoc;
+  // var username1;
+  // var kullname2;
+  // var kullname3;
+  // var yigo;
   /*void kullname() {
     final DatabaseReference _testRef = FirebaseDatabase.instance.reference();
     late StreamSubscription _dailySpecialStream;
@@ -208,6 +209,21 @@ class _MapsaState extends State<Mapsa> {
     } else {
       vss = Icons.sick;
     }
+    if (s3 == "true") {
+      ss = Colors.green;
+      s3 = "Moving";
+    } else {
+      ss = Colors.red;
+      s3 = "Still";
+    }
+    bool b = s3.toLowerCase() == 'true';
+    hesaplama(1, s2, b);
+    if (double.parse(s4) < 20 || double.parse(s4) > 35) {
+      s4 = "Bad Living Conditions";
+    } else {
+      s4 = "Good Living Conditions";
+    }
+
     return Stack(
       children: <Widget>[
         Container(
@@ -222,9 +238,10 @@ class _MapsaState extends State<Mapsa> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
-                        "zz",
-                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      Text(
+                        s,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 15),
                       ),
                       const SizedBox(
                         height: 5,
@@ -278,26 +295,26 @@ class _MapsaState extends State<Mapsa> {
                   Text(s4)
                 ],
               ),
-              const SizedBox(height: 15),
-              Expanded(
-                  flex: 1,
-                  child: Row(
-                    children: <Widget>[
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      const Icon(
-                        Icons.home_work_rounded,
-                        color: Colors.blue,
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Text(adres)
-                    ],
-                  )),
+              // const SizedBox(height: 15),
+              // Expanded(
+              //     flex: 1,
+              //     child: Row(
+              //       children: <Widget>[
+              //         const SizedBox(
+              //           width: 20,
+              //         ),
+              //         const Icon(
+              //           Icons.home_work_rounded,
+              //           color: Colors.blue,
+              //         ),
+              //         const SizedBox(
+              //           width: 15,
+              //         ),
+              //         Text(adres)
+              //       ],
+              //     )),
               const SizedBox(
-                height: 0,
+                height: 15,
               ),
               Expanded(
                   flex: 1,
@@ -318,21 +335,24 @@ class _MapsaState extends State<Mapsa> {
                       ),
                       Text(num),
                     ],
-                  ))
+                  )),
+              SizedBox(
+                height: 65,
+              )
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Align(
-            alignment: Alignment.topRight,
-            child: FloatingActionButton(
-                child: const Icon(
-                  Icons.navigation,
-                ),
-                onPressed: () {}),
-          ),
-        )
+        // Padding(
+        //   padding: const EdgeInsets.all(8.0),
+        //   child: Align(
+        //     alignment: Alignment.topRight,
+        //     child: FloatingActionButton(
+        //         child: const Icon(
+        //           Icons.navigation,
+        //         ),
+        //         onPressed: () {}),
+        //   ),
+        // )
       ],
     );
   }
@@ -356,16 +376,30 @@ class _MapsaState extends State<Mapsa> {
 
   void fillMarkers() {
     _markers.clear();
+    // if(){
+
+    // }
     for (DataTiles dataTiles in dataTilesList) {
       List<String> positions = dataTiles.position!.split(",");
-
+      var saa;
+      if (dataTiles.movement! == "true") {
+        saa = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan);
+      } else {
+        saa = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
+      }
       _markers.add(Marker(
           markerId: MarkerId(dataTiles.userid!),
+          icon: saa,
           position:
               LatLng(double.parse(positions[0]), double.parse(positions[1])),
           onTap: () {
-            markerTap(dataTiles.address!, dataTiles.name!, dataTiles.blood!,
-                dataTiles.disease!, dataTiles.movement!);
+            markerTap(
+                dataTiles.address!,
+                dataTiles.name!,
+                dataTiles.blood!,
+                dataTiles.disease!,
+                dataTiles.movement!,
+                dataTiles.temperature!);
           }));
     }
     setState(() {});
@@ -391,17 +425,18 @@ class _MapsaState extends State<Mapsa> {
         focusDataTiles!.name!,
         focusDataTiles!.blood!,
         focusDataTiles!.disease!,
-        focusDataTiles!.movement!);
+        focusDataTiles!.movement!,
+        focusDataTiles!.temperature!);
   }
 
   Future markerTap(String address, String name, String blood, String disease,
-      String movement) async {
+      String movement, double temperature) async {
     await Future.delayed(const Duration(milliseconds: 400));
     scaffoldKey.currentState!.showBottomSheet((context) => Container(
           child: getBottomSheet(name, blood, disease, Colors.green, movement,
-              "Ortam Koşulları İyi", address, "05387423541"),
+              temperature.toString(), address, "05387423541"),
           height: 250,
-          color: Colors.transparent,
+          color: Colors.black,
         ));
   }
 
