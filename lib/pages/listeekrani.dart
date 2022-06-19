@@ -6,8 +6,10 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:math';
 
 import '../details.dart';
+import '../model/data_tilessort.dart';
 
 class Liste extends StatefulWidget {
   final GlobalKey? globalKey;
@@ -46,6 +48,7 @@ class _ListeState extends State<Liste> {
 
   List<DataTiles> dataTilesList = [];
 
+  List<Color> dataTilecolor = [];
   @override
   void initState() {
     super.initState();
@@ -65,6 +68,7 @@ class _ListeState extends State<Liste> {
             DataTiles.fromJson(Map<String, dynamic>.from(value[key]));
         dataTilesList.add(dataTiles);
       }
+
       setState(() {});
     });
   }
@@ -85,13 +89,20 @@ class _ListeState extends State<Liste> {
         physics: ScrollPhysics(parent: null),
         shrinkWrap: true,
         itemBuilder: (listViewContext, int index) {
-          if (dataTilesList[index].movement! == "true") {
-            colorss = Colors.amber;
+          dataTilecolor.length = dataTilesList.length;
+          dataTilesList.sort((a, b) => a.color.compareTo(b.color));
+
+          if (dataTilesList[index].color <= 45 &&
+              dataTilesList[index].color >= 20) {
+            dataTilecolor[index] = Color.fromARGB(255, 189, 143, 5);
+          } else if (dataTilesList[index].color < 20) {
+            dataTilecolor[index] = Colors.green;
           } else {
-            colorss = Colors.red;
+            dataTilecolor[index] = Colors.red;
           }
+
           return Card(
-            color: colorss,
+            color: dataTilecolor[index],
             child: ListTile(
               title: Text(dataTilesList[index].name!),
               trailing: IconButton(
@@ -140,6 +151,7 @@ class _ListeState extends State<Liste> {
   Future addUser() async {
     UserModel userModel = Provider.of<UserModel>(context, listen: false);
     bool sonuc = await userModel.addUser(DataTiles(
+            address: "05442451425",
             blood: "B RH-",
             connection: "B",
             disease: "No",
@@ -148,7 +160,8 @@ class _ListeState extends State<Liste> {
             name: "Demo",
             position: "40.993087040640276, 29.043216666803577",
             temperature: 23.5,
-            userid: "3")
+            userid: "3",
+            color: 0)
         .toJson());
     if (sonuc) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -162,4 +175,24 @@ class _ListeState extends State<Liste> {
 
   @override
   noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+int hesaplama(String b, String c, double s4) {
+  var s5;
+  s5 = s4;
+  int point = 0;
+  if (c == "false") {
+    point += 50;
+  } else if (b == "Kronik Hasta") {
+    point += 30;
+  } else if (b == "Hasta") {
+    point += 15;
+  } else if (b == "Sağlıklı") {
+    point += 0;
+  } else if (s5 <= 17) {
+    point += 10;
+  } else if (s5 >= 30) {
+    point += 5;
+  }
+  return point;
 }

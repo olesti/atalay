@@ -32,131 +32,10 @@ class _MapsaState extends State<Mapsa> {
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final _markers = HashSet<Marker>();
-  // var cagatayLoc;
-  // var username1;
-  // var kullname2;
-  // var kullname3;
-  // var yigo;
-  /*void kullname() {
-    final DatabaseReference _testRef = FirebaseDatabase.instance.reference();
-    late StreamSubscription _dailySpecialStream;
-    _dailySpecialStream = _testRef.child('1595/Name').onValue.listen((event) {
-    String  kullname1 = event.snapshot.value;
-    });
-  }*/
 
   late PinData _sourcePinInfo;
 
   late CameraPosition focusCameraPosition;
-
-  /*
-  void _onMap(GoogleMapController mycontroller) {
-    final DatabaseReference _testRef = FirebaseDatabase.instance.reference();
-    late StreamSubscription _dailySpecialStream;
-    late StreamSubscription _dailySpecialStream1;
-    late StreamSubscription _dailySpecialStream2;
-    _dailySpecialStream = _testRef.child('Position').onValue.listen((event) {
-      final String sa = event.snapshot.value;
-      List<String> sa1 = sa.split(",");
-      // sa1[0];
-      // sa1[1];
-      double varrs = double.parse(sa1[0]);
-      double varrs1 = double.parse(sa1[1]);
-      var cagatayLoc = LatLng(varrs, varrs1);
-
-      _dailySpecialStream2 = _testRef.child('1658').onValue.listen((event) {
-        //final Map<String, dynamic> sa1 = event.snapshot.value;
-        final Map<String, dynamic> sa1 = Map<String, dynamic>.from(event
-            .snapshot
-            .value); /*
-
-      List<String> sa2 = sa.split(",");
-      double varrs2 = double.parse(sa1[0]);
-      double varrs3 = double.parse(sa1[1]);
-      */
-        //var yigo = LatLng(varrs2, varrs3);
-      });
-      // sa1[0];
-      // sa1[1];
-
-      _dailySpecialStream1 =
-          _testRef.child('1595/Name').onValue.listen((event) {
-        String username1 = event.snapshot.value;
-        /*
-        List<String> sa2 = kullname1.split(" ");
-        String varrs2 = sa2[0];
-        String varrs3 = sa2[1];*/
-
-        setState(() {
-          _markers.add(
-            Marker(
-                markerId: const MarkerId('id-1'),
-                position: const LatLng(41.003710, 29.032128),
-                onTap: () {
-                  var bottomSheetController1 = scaffoldKey.currentState!
-                      .showBottomSheet((context) => Container(
-                            child: getBottomSheet(
-                                "Kaan Sümer",
-                                "AB rh-",
-                                "Sağlıklı",
-                                Colors.green,
-                                "Hareket Var",
-                                "Ortam Koşulları İyi",
-                                adresse3,
-                                "05387423541"),
-                            height: 250,
-                            color: Colors.transparent,
-                          ));
-                }),
-          );
-          _markers.add(
-            Marker(
-                markerId: const MarkerId('id-2'),
-                position: const LatLng(41.007710, 29.06528),
-                onTap: () {
-                  var bottomSheetController1 = scaffoldKey.currentState!
-                      .showBottomSheet((context) => Container(
-                            child: getBottomSheet(
-                                "Yiğit Atalay",
-                                "0 rh+",
-                                "Kronik Hasta",
-                                Colors.green.shade200,
-                                "Hareket Var",
-                                "Ortam Koşulları İyi",
-                                adresse2,
-                                "05443042496"),
-                            height: 250,
-                            color: Colors.transparent,
-                          ));
-                }),
-          );
-          _markers.add(
-            Marker(
-                icon: BitmapDescriptor.defaultMarkerWithHue(0.01),
-                markerId: const MarkerId('id-3'),
-                position: cagatayLoc,
-                onTap: () {
-                  hesaplama(65, "Hasta", true);
-                  var bottomSheetController1 = scaffoldKey.currentState!
-                      .showBottomSheet((context) => Container(
-                            child: getBottomSheet(
-                                username1,
-                                "A rh+",
-                                "Sağlıklı",
-                                Colors.red.shade500,
-                                "Hareket Yok",
-                                "Ortam Koşulları Kötü",
-                                adresse1,
-                                "05415821244"),
-                            height: 250,
-                            color: Colors.transparent,
-                          ));
-                }),
-          );
-        });
-      });
-    });
-  }*/
 
   List<DataTiles> dataTilesList = [];
 
@@ -201,38 +80,49 @@ class _MapsaState extends State<Mapsa> {
     );
   }
 
-  Widget getBottomSheet(String s, String s1, String s2, Color ss, String s3,
+  Widget getBottomSheet(String s, String s1, String s2, int ss, String s3,
       String s4, String adres, String num) {
     var vss;
-    if (s2 == "Sağlıklı") {
+    if (s2 == "null") {
       vss = Icons.health_and_safety;
+    } else if (s2 == "Hasta") {
+      vss = Icons.healing_outlined;
     } else {
       vss = Icons.sick;
     }
+    /*
     if (s3 == "true") {
       ss = Colors.green;
       s3 = "Moving";
     } else {
       ss = Colors.red;
       s3 = "Still";
-    }
+    }*/
     bool b = s3.toLowerCase() == 'true';
-    hesaplama(1, s2, b);
+    //int a = hesaplama(s2, s3, double.parse(s4));
+
     if (double.parse(s4) < 20 || double.parse(s4) > 35) {
       s4 = "Bad Living Conditions";
     } else {
       s4 = "Good Living Conditions";
     }
-
+    var saa;
+    if (ss <= 45 && ss >= 20) {
+      saa = Color.fromARGB(255, 189, 143, 5);
+    } else if (ss <= 10) {
+      saa = Colors.green;
+    } else {
+      saa = Colors.red;
+    }
     return Stack(
       children: <Widget>[
         Container(
           margin: const EdgeInsets.only(top: 0),
-          color: Colors.white,
+          color: Colors.black,
           child: Column(
             children: <Widget>[
               Container(
-                color: ss,
+                color: saa,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Column(
@@ -295,24 +185,6 @@ class _MapsaState extends State<Mapsa> {
                   Text(s4)
                 ],
               ),
-              // const SizedBox(height: 15),
-              // Expanded(
-              //     flex: 1,
-              //     child: Row(
-              //       children: <Widget>[
-              //         const SizedBox(
-              //           width: 20,
-              //         ),
-              //         const Icon(
-              //           Icons.home_work_rounded,
-              //           color: Colors.blue,
-              //         ),
-              //         const SizedBox(
-              //           width: 15,
-              //         ),
-              //         Text(adres)
-              //       ],
-              //     )),
               const SizedBox(
                 height: 15,
               ),
@@ -376,20 +248,20 @@ class _MapsaState extends State<Mapsa> {
 
   void fillMarkers() {
     _markers.clear();
-    // if(){
 
-    // }
     for (DataTiles dataTiles in dataTilesList) {
       List<String> positions = dataTiles.position!.split(",");
       var saa;
-      if (dataTiles.movement! == "true") {
-        saa = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan);
+      if (dataTiles.color <= 45 && dataTiles.color >= 20) {
+        saa = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange);
+      } else if (dataTiles.color <= 10) {
+        saa = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
       } else {
         saa = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
       }
       _markers.add(Marker(
           markerId: MarkerId(dataTiles.userid!),
-          icon: saa,
+          icon: BitmapDescriptor.defaultMarker,
           position:
               LatLng(double.parse(positions[0]), double.parse(positions[1])),
           onTap: () {
@@ -399,7 +271,8 @@ class _MapsaState extends State<Mapsa> {
                 dataTiles.blood!,
                 dataTiles.disease!,
                 dataTiles.movement!,
-                dataTiles.temperature!);
+                dataTiles.temperature!,
+                dataTiles.color);
           }));
     }
     setState(() {});
@@ -426,14 +299,15 @@ class _MapsaState extends State<Mapsa> {
         focusDataTiles!.blood!,
         focusDataTiles!.disease!,
         focusDataTiles!.movement!,
-        focusDataTiles!.temperature!);
+        focusDataTiles!.temperature!,
+        focusDataTiles!.color);
   }
 
   Future markerTap(String address, String name, String blood, String disease,
-      String movement, double temperature) async {
+      String movement, double temperature, int color) async {
     await Future.delayed(const Duration(milliseconds: 400));
     scaffoldKey.currentState!.showBottomSheet((context) => Container(
-          child: getBottomSheet(name, blood, disease, Colors.green, movement,
+          child: getBottomSheet(name, blood, disease, color, movement,
               temperature.toString(), address, "05387423541"),
           height: 250,
           color: Colors.black,
@@ -443,22 +317,4 @@ class _MapsaState extends State<Mapsa> {
   void updateCameraPosition(GoogleMapController googleMapController) {
     controller = googleMapController;
   }
-}
-
-void hesaplama(int a, String b, bool c) {
-  int point = 0;
-  if (c = false) {
-    point += 50;
-  } else if (b == "Kronik Hasta") {
-    point += 30;
-  } else if (b == "Hasta") {
-    point += 15;
-  } else if (b == "Sağlıklı") {
-    point += 0;
-  } else if (a >= 50) {
-    point += 10;
-  } else if (50 > a || a >= 35) {
-    point += 5;
-  }
-  print("point: " + point.toString());
 }
