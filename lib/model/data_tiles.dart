@@ -38,8 +38,11 @@ class DataTiles {
             position: json["Position"] as String,
             temperature: json["Temperature"] as double,
             userid: json["userid"] as String,
-            color: hesaplama(json["Disease"] as String,
-                json["Movement"] as String, json["Temperature"] as double));
+            color: hesaplama(
+                json["Disease"] as String,
+                json["Movement"] as String,
+                json["Temperature"] as double,
+                json["Humidity"] as String));
 
   Map<String, Object?> toJson() => {
         "Address": address,
@@ -68,10 +71,11 @@ int sad(String a) {
   return 2;
 }
 
-int hesaplama(String b, String c, double s4) {
+int hesaplama(String b, String c, double s4, String nem) {
   var s5;
   s5 = s4;
   int point = 0;
+  double huminity = double.parse(nem);
   if (c == "false") {
     point += 50;
   }
@@ -85,6 +89,12 @@ int hesaplama(String b, String c, double s4) {
     point += 10;
   }
   if (s5 >= 30) {
+    point += 15;
+  }
+  if (huminity >= 60 || huminity <= 40) {
+    point += 15;
+  }
+  if (huminity >= 75 || huminity <= 30) {
     point += 5;
   }
   return point;

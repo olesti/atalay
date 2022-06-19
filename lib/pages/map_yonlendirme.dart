@@ -60,11 +60,13 @@ class _Asil1State extends State<Asil1> {
             icon: Icon(CupertinoIcons.home),
             label: 'Home',
             backgroundColor: Colors.blue,
+            // activeIcon: Icon(Icons.home_filled)
           ),
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.map),
             label: 'Map',
             backgroundColor: Colors.green,
+            //activeIcon: Icon(Icons.map_sharp)
           ),
           BottomNavigationBarItem(
             icon: Icon(
@@ -72,6 +74,7 @@ class _Asil1State extends State<Asil1> {
             ),
             label: 'List',
             backgroundColor: Colors.yellow,
+            //activeIcon: Icon(Icons.list_alt_sharp),
           ),
         ],
         currentIndex: currentIndex,

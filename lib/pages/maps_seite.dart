@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 
 class Mapsa extends StatefulWidget {
   String? userKey;
@@ -81,7 +82,7 @@ class _MapsaState extends State<Mapsa> {
   }
 
   Widget getBottomSheet(String s, String s1, String s2, int ss, String s3,
-      String s4, String adres, String num) {
+      String s4, String adres, String num, String hum) {
     var vss;
     if (s2 == "null") {
       vss = Icons.health_and_safety;
@@ -101,24 +102,26 @@ class _MapsaState extends State<Mapsa> {
     bool b = s3.toLowerCase() == 'true';
     //int a = hesaplama(s2, s3, double.parse(s4));
 
-    if (double.parse(s4) < 20 || double.parse(s4) > 35) {
-      s4 = "Bad Living Conditions";
-    } else {
+    if ((double.parse(hum) < 60 && double.parse(hum) > 40) ||
+        (double.parse(s4) <= 28 && double.parse(s4) >= 20)) {
       s4 = "Good Living Conditions";
+    } else {
+      s4 = "Bad Living Conditions";
     }
     var saa;
     if (ss <= 45 && ss >= 20) {
-      saa = Color.fromARGB(255, 189, 143, 5);
-    } else if (ss <= 10) {
+      saa = const Color.fromARGB(255, 189, 143, 5);
+    } else if (ss < 20) {
       saa = Colors.green;
     } else {
       saa = Colors.red;
     }
+
     return Stack(
       children: <Widget>[
         Container(
           margin: const EdgeInsets.only(top: 0),
-          color: Colors.black,
+          color: Colors.white,
           child: Column(
             children: <Widget>[
               Container(
@@ -138,7 +141,7 @@ class _MapsaState extends State<Mapsa> {
                       ),
                       Row(
                         children: <Widget>[
-                          Text(s1,
+                          Text(s1 + " " + ss.toString(),
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 14)),
                           const Icon(
@@ -229,6 +232,14 @@ class _MapsaState extends State<Mapsa> {
     );
   }
 
+  void _sendSMS(String message, List<String> recipents) async {
+    String _result = await sendSMS(message: message, recipients: recipents)
+        .catchError((onError) {
+      print(onError);
+    });
+    print(_result);
+  }
+
   void getListener() {
     Stream<Event> usersRef =
         FirebaseDatabase.instance.reference().child("Users").onValue;
@@ -254,14 +265,14 @@ class _MapsaState extends State<Mapsa> {
       var saa;
       if (dataTiles.color <= 45 && dataTiles.color >= 20) {
         saa = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange);
-      } else if (dataTiles.color <= 10) {
+      } else if (dataTiles.color < 20) {
         saa = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
       } else {
         saa = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
       }
       _markers.add(Marker(
           markerId: MarkerId(dataTiles.userid!),
-          icon: BitmapDescriptor.defaultMarker,
+          icon: saa,
           position:
               LatLng(double.parse(positions[0]), double.parse(positions[1])),
           onTap: () {
@@ -272,7 +283,8 @@ class _MapsaState extends State<Mapsa> {
                 dataTiles.disease!,
                 dataTiles.movement!,
                 dataTiles.temperature!,
-                dataTiles.color);
+                dataTiles.color,
+                dataTiles.humidity!);
           }));
     }
     setState(() {});
@@ -300,15 +312,16 @@ class _MapsaState extends State<Mapsa> {
         focusDataTiles!.disease!,
         focusDataTiles!.movement!,
         focusDataTiles!.temperature!,
-        focusDataTiles!.color);
+        focusDataTiles!.color,
+        focusDataTiles!.humidity!);
   }
 
   Future markerTap(String address, String name, String blood, String disease,
-      String movement, double temperature, int color) async {
+      String movement, double temperature, int color, String huminity) async {
     await Future.delayed(const Duration(milliseconds: 400));
     scaffoldKey.currentState!.showBottomSheet((context) => Container(
           child: getBottomSheet(name, blood, disease, color, movement,
-              temperature.toString(), address, "05387423541"),
+              temperature.toString(), address, "05387423541", huminity),
           height: 250,
           color: Colors.black,
         ));

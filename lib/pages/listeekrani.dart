@@ -90,7 +90,7 @@ class _ListeState extends State<Liste> {
         shrinkWrap: true,
         itemBuilder: (listViewContext, int index) {
           dataTilecolor.length = dataTilesList.length;
-          dataTilesList.sort((a, b) => a.color.compareTo(b.color));
+          dataTilesList.sort((a, b) => b.color.compareTo(a.color));
 
           if (dataTilesList[index].color <= 45 &&
               dataTilesList[index].color >= 20) {

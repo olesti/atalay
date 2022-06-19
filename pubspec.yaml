@@ -41,6 +41,7 @@ dependencies:
   #flutter_gen: ^4.1.5
   get_it: 5.0.1
   provider: 5.0.0
+  flutter_sms: ^2.3.3
 
 dev_dependencies:
   flutter_test:
