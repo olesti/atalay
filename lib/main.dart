@@ -127,6 +127,7 @@ class _MyHomeState extends State<MyHome> {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Auth',
         theme: ThemeData(
+          fontFamily: "MetaPro",
           primaryColor: kPrimaryColor,
           scaffoldBackgroundColor: Colors.white,
         ),

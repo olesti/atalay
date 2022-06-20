@@ -99,6 +99,11 @@ class _MapsaState extends State<Mapsa> {
       ss = Colors.red;
       s3 = "Still";
     }*/
+    if (s3 == "true") {
+      s3 = "Moving";
+    } else {
+      s3 = "Still";
+    }
     bool b = s3.toLowerCase() == 'true';
     //int a = hesaplama(s2, s3, double.parse(s4));
 
@@ -202,13 +207,13 @@ class _MapsaState extends State<Mapsa> {
                         icon: const Icon(Icons.call),
                         color: Colors.blue,
                         onPressed: () async {
-                          await FlutterPhoneDirectCaller.callNumber(num);
+                          await FlutterPhoneDirectCaller.callNumber(adres);
                         },
                       ),
                       const SizedBox(
                         width: 0,
                       ),
-                      Text(num),
+                      Text(adres),
                     ],
                   )),
               SizedBox(
@@ -230,14 +235,6 @@ class _MapsaState extends State<Mapsa> {
         // )
       ],
     );
-  }
-
-  void _sendSMS(String message, List<String> recipents) async {
-    String _result = await sendSMS(message: message, recipients: recipents)
-        .catchError((onError) {
-      print(onError);
-    });
-    print(_result);
   }
 
   void getListener() {

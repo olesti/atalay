@@ -111,7 +111,16 @@ class _ListeState extends State<Liste> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Detailpage(index),
+                        builder: (context) => Detailpage(
+                          dataTilesList[index].name!,
+                          dataTilesList[index].temperature!,
+                          dataTilesList[index].blood!,
+                          dataTilesList[index].position!,
+                          dataTilesList[index].movement!,
+                          dataTilesList[index].address!,
+                          dataTilesList[index].humidity!,
+                          dataTilesList[index].connection!,
+                        ),
                       ),
                     );
                   }),

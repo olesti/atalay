@@ -58,3 +58,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+  fonts:
+    - family: MetaPro
+      fonts:
+        - asset: assets/fonts/FFMetaProBook.ttf

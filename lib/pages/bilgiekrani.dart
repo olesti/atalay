@@ -15,6 +15,7 @@ class Bilgi extends StatelessWidget {
     return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
+          fontFamily: "MetaPro",
           primarySwatch: Colors.red,
         ),
         home: FutureBuilder(

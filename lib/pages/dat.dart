@@ -195,7 +195,7 @@ class _nameState extends State<name> {
                           Text(
                             "Was tun in der Zeit eines Erdbebens",
                             style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 19,
                                 color: Color(0xFF363f93),
                                 fontWeight: FontWeight.bold),
                           ),
