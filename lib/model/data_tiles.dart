@@ -79,10 +79,10 @@ int hesaplama(String b, String c, double s4, String nem) {
   if (c == "false") {
     point += 50;
   }
-  if (b == "Kronik Hasta") {
+  if (b == "Chronischer Patient") {
     point += 30;
   }
-  if (b == "Hasta") {
+  if (b == "Patient") {
     point += 15;
   }
   if (s5 <= 17) {

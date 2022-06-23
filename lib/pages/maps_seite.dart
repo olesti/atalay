@@ -85,8 +85,9 @@ class _MapsaState extends State<Mapsa> {
       String s4, String adres, String num, String hum) {
     var vss;
     if (s2 == "null") {
+      s2 = "Gesund";
       vss = Icons.health_and_safety;
-    } else if (s2 == "Hasta") {
+    } else if (s2 == "Patient") {
       vss = Icons.healing_outlined;
     } else {
       vss = Icons.sick;
@@ -100,7 +101,7 @@ class _MapsaState extends State<Mapsa> {
       s3 = "Still";
     }*/
     if (s3 == "true") {
-      s3 = "Moving";
+      s3 = "Bewegend";
     } else {
       s3 = "Still";
     }
@@ -109,9 +110,9 @@ class _MapsaState extends State<Mapsa> {
 
     if ((double.parse(hum) < 60 && double.parse(hum) > 40) ||
         (double.parse(s4) <= 28 && double.parse(s4) >= 20)) {
-      s4 = "Good Living Conditions";
+      s4 = "Gute Lebensbedingungen";
     } else {
-      s4 = "Bad Living Conditions";
+      s4 = "Schlechte Lebensbedingungen";
     }
     var saa;
     if (ss <= 45 && ss >= 20) {
@@ -146,7 +147,8 @@ class _MapsaState extends State<Mapsa> {
                       ),
                       Row(
                         children: <Widget>[
-                          Text(s1 + " " + ss.toString(),
+                          Text(s1,
+                              //+ " " + ss.toString(),
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 14)),
                           const Icon(

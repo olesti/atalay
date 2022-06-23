@@ -112,20 +112,26 @@ class _ListeState extends State<Liste> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => Detailpage(
-                          dataTilesList[index].name!,
-                          dataTilesList[index].temperature!,
-                          dataTilesList[index].blood!,
-                          dataTilesList[index].position!,
-                          dataTilesList[index].movement!,
-                          dataTilesList[index].address!,
-                          dataTilesList[index].humidity!,
-                          dataTilesList[index].connection!,
-                        ),
+                            dataTilesList[index].name!,
+                            dataTilesList[index].temperature!,
+                            dataTilesList[index].blood!,
+                            dataTilesList[index].position!,
+                            dataTilesList[index].movement!,
+                            dataTilesList[index].address!,
+                            dataTilesList[index].humidity!,
+                            dataTilesList[index].connection!,
+                            dataTilesList[index].color,
+                            dataTilesList[index].disease!),
                       ),
                     );
                   }),
-              leading: Icon(Icons.supervised_user_circle),
-              subtitle: Text(dataTilesList[index].blood!),
+              leading: Icon(
+                Icons.person_outline_sharp,
+                color: Colors.black,
+              ),
+              subtitle: Text(dataTilesList[index].color.toString() +
+                  "     " +
+                  dataTilesList[index].blood!),
               //selected: index = dataTilesList[index].,
               onTap: () {
                 UserModel userModel =
@@ -163,13 +169,13 @@ class _ListeState extends State<Liste> {
             address: "05442451425",
             blood: "B RH-",
             connection: "B",
-            disease: "No",
+            disease: "null",
             humidity: "45.0",
             movement: "false",
             name: "Demo",
             position: "40.993087040640276, 29.043216666803577",
             temperature: 23.5,
-            userid: "3",
+            userid: "12",
             color: 0)
         .toJson());
     if (sonuc) {
@@ -184,24 +190,4 @@ class _ListeState extends State<Liste> {
 
   @override
   noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-int hesaplama(String b, String c, double s4) {
-  var s5;
-  s5 = s4;
-  int point = 0;
-  if (c == "false") {
-    point += 50;
-  } else if (b == "Kronik Hasta") {
-    point += 30;
-  } else if (b == "Hasta") {
-    point += 15;
-  } else if (b == "Sağlıklı") {
-    point += 0;
-  } else if (s5 <= 17) {
-    point += 10;
-  } else if (s5 >= 30) {
-    point += 5;
-  }
-  return point;
 }
