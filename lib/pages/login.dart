@@ -32,6 +32,13 @@ class _LoginState extends State<Login> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Image(
+                  width: 250,
+                  fit: BoxFit.fitHeight,
+                  image: AssetImage("assets/images/taü.png")),
+              SizedBox(
+                height: 190,
+              ),
               TextFormField(
                 decoration: const InputDecoration(
                     focusedBorder: OutlineInputBorder(
@@ -88,7 +95,26 @@ class _LoginState extends State<Login> {
                       })
                 ],
               ),
-              _loginbutton()
+              _loginbutton(),
+              SizedBox(
+                height: 30,
+              ),
+              Column(
+                children: const <Widget>[
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Image(
+                      height: 100,
+                      fit: BoxFit.fitHeight,
+                      image: AssetImage("assets/images/tubitak.png")),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                      "       Yiğit Atalay  Wise 2021-2022 \nBachelorarbeit und Tubitak Projekt")
+                ],
+              ),
             ],
           ),
         ),

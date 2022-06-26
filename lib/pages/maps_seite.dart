@@ -108,7 +108,7 @@ class _MapsaState extends State<Mapsa> {
     bool b = s3.toLowerCase() == 'true';
     //int a = hesaplama(s2, s3, double.parse(s4));
 
-    if ((double.parse(hum) < 60 && double.parse(hum) > 40) ||
+    if ((double.parse(hum) < 60 && double.parse(hum) > 40) &&
         (double.parse(s4) <= 28 && double.parse(s4) >= 20)) {
       s4 = "Gute Lebensbedingungen";
     } else {
