@@ -44,12 +44,12 @@ class _LoginState extends State<Login> {
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.blueAccent),
                     ),
-                    labelText: "E-posta Adresi",
+                    labelText: "E-Mail",
                     labelStyle: TextStyle(color: Colors.blueAccent),
                     border: OutlineInputBorder()),
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return "E-posta Adresinizi giriniz";
+                    return "Geben Sie Ihr E-Mail ein";
                   } else {
                     return null;
                   }
@@ -64,12 +64,12 @@ class _LoginState extends State<Login> {
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.blueAccent),
                     ),
-                    labelText: "Parola",
+                    labelText: "Passwort",
                     labelStyle: TextStyle(color: Colors.blueAccent),
                     border: OutlineInputBorder()),
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return "Parolanızı giriniz";
+                    return "Geben Sie Ihr Passwort ein";
                   } else {
                     return null;
                   }
@@ -82,13 +82,13 @@ class _LoginState extends State<Login> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   MaterialButton(
-                      child: const Text("Kayıt"),
+                      child: const Text("Registrieren"),
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => Kayit()));
                       }),
                   MaterialButton(
-                      child: Text("Şifremi unuttum"),
+                      child: Text("Ihr Passwort vergessen ?"),
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => Kayit()));
@@ -124,7 +124,7 @@ class _LoginState extends State<Login> {
 
   // ignore: deprecated_member_use
   Widget _loginbutton() => RaisedButton(
-      child: const Text("Giriş Yap"),
+      child: const Text("Einloggen"),
       onPressed: () {
         signIn();
       });

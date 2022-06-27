@@ -63,7 +63,7 @@ class Detailpage extends StatelessWidget {
               Row(
                 children: <Widget>[
                   const Text(
-                      " Name:\n\n Temperature:\n\n Hastalık:\n\n Blood:\n\n Pos:\n\n Movement:\n\n Telefonnumer:\n\n Huminity:\n\n Connection:",
+                      " Name:\n\n Temperature:\n\n Krankheit:\n\n Blutgruppe:\n\n Ort:\n\n Bewegung:\n\n Telefonnumer:\n\n Feuchtigkeit:\n\n Verbindung:",
                       style: TextStyle(
                         fontFamily: "MetaPro",
                         fontSize: 19.0,
